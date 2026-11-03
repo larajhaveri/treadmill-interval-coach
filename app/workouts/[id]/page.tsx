@@ -1,10 +1,16 @@
 import Link from "next/link";
 import { getWorkoutOrNotFound } from "@/lib/get-workout";
+import { createClient } from "@/lib/supabase/server";
+import StarButton from "../star-button";
 import { describeSegment, describeWorkout, hardDistanceMeters } from "@/lib/workouts";
 
 export default async function WorkoutDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
   const workout = await getWorkoutOrNotFound(id);
+
+  const supabase = await createClient();
+  const { data: star } = await supabase.from("stars").select("workout_id").eq("workout_id", workout.id).maybeSingle();
+  const starred = Boolean(star);
 
   return (
     <main className="page">
@@ -55,6 +61,7 @@ export default async function WorkoutDetailPage({ params }: { params: Promise<{ 
           <Link href={`/workouts/${workout.id}/delete`} className="btn btn-plain">
             Delete
           </Link>
+          <StarButton workoutId={workout.id} starred={starred} labeled />
           <Link href="/" className="btn btn-plain">
             Back
           </Link>

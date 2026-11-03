@@ -233,3 +233,58 @@ a.btn {
   margin: 0;
   font-weight: 700;
 }
+
+/* Stars (feature 5) */
+.list-item-star {
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.star-btn {
+  font: inherit;
+  font-size: 1.6rem;
+  line-height: 1;
+  min-width: 48px;
+  min-height: 48px;
+  border: 3px solid var(--ink);
+  border-radius: 12px;
+  background: var(--white);
+  color: var(--ink);
+  cursor: pointer;
+}
+
+.star-btn[aria-pressed="true"] {
+  background: var(--yellow);
+}
+
+.star-btn:focus-visible {
+  outline: 3px solid var(--yellow);
+  outline-offset: 3px;
+}
+
+.tabs {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.tab {
+  font-weight: 800;
+  color: var(--ink);
+  text-decoration: none;
+  border: 3px solid var(--ink);
+  border-radius: 999px;
+  padding: 6px 14px;
+  background: var(--white);
+}
+
+.tab[aria-current="page"] {
+  background: var(--yellow);
+}
+
+.tab:focus-visible {
+  outline: 3px solid var(--yellow);
+  outline-offset: 3px;
+}

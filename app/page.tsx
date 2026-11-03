@@ -1,9 +1,17 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
-import { describeWorkout, type Workout } from "@/lib/workouts";
+import type { Workout } from "@/lib/workouts";
+import WorkoutList from "./workouts/workout-list";
 
-export default async function HomePage() {
+export default async function HomePage({
+  searchParams,
+}: {
+  searchParams: Promise<{ view?: string }>;
+}) {
+  const { view } = await searchParams;
+  const showStarred = view === "starred";
+
   const supabase = await createClient();
   const {
     data: { user },
@@ -25,6 +33,13 @@ export default async function HomePage() {
     .order("created_at", { ascending: false })
     .returns<Workout[]>();
 
+  // Stars are a junction table: one row per (runner, workout). Row-level security
+  // returns only the signed-in runner's stars.
+  const { data: starRows } = await supabase.from("stars").select("workout_id");
+  const starredIds = new Set((starRows ?? []).map((row) => row.workout_id as string));
+
+  const visible = (workouts ?? []).filter((w) => !showStarred || starredIds.has(w.id));
+
   return (
     <main className="page">
       <section className="hero">
@@ -34,20 +49,23 @@ export default async function HomePage() {
       </section>
       <section className="card stack">
         <h2>Your workouts</h2>
-        {workouts && workouts.length > 0 ? (
-          <ul className="list">
-            {workouts.map((w) => (
-              <li key={w.id} className="list-item">
-                <Link href={`/workouts/${w.id}`} className="list-link">
-                  <strong>{w.name}</strong>
-                  <span className="muted">{describeWorkout(w)}</span>
-                </Link>
-              </li>
-            ))}
-          </ul>
-        ) : (
-          <p className="muted">No workouts yet. Add your first one.</p>
-        )}
+        <nav className="tabs" aria-label="Workout views">
+          <Link href="/" className="tab" aria-current={showStarred ? undefined : "page"}>
+            All ({workouts?.length ?? 0})
+          </Link>
+          <Link href="/?view=starred" className="tab" aria-current={showStarred ? "page" : undefined}>
+            ★ Starred ({starredIds.size})
+          </Link>
+        </nav>
+        <WorkoutList
+          workouts={visible}
+          starredIds={starredIds}
+          emptyMessage={
+            showStarred
+              ? "No starred workouts yet. Tap the ☆ next to a workout to star it."
+              : "No workouts yet. Add your first one."
+          }
+        />
         <Link href="/workouts/new" className="btn btn-red">
           Add a workout
         </Link>
