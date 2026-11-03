@@ -2,6 +2,7 @@ import Link from "next/link";
 import { getWorkoutOrNotFound } from "@/lib/get-workout";
 import { createClient } from "@/lib/supabase/server";
 import StarButton from "../star-button";
+import { EFFORT_LABELS, formatRunDate, hardestLabel, type Session } from "@/lib/sessions";
 import { describeSegment, describeWorkout, hardDistanceMeters } from "@/lib/workouts";
 
 export default async function WorkoutDetailPage({ params }: { params: Promise<{ id: string }> }) {
@@ -11,6 +12,15 @@ export default async function WorkoutDetailPage({ params }: { params: Promise<{ 
   const supabase = await createClient();
   const { data: star } = await supabase.from("stars").select("workout_id").eq("workout_id", workout.id).maybeSingle();
   const starred = Boolean(star);
+
+  // Row-level security returns only this runner's sessions.
+  const { data: sessions } = await supabase
+    .from("sessions")
+    .select("*")
+    .eq("workout_id", workout.id)
+    .order("run_date", { ascending: false })
+    .order("created_at", { ascending: false })
+    .returns<Session[]>();
 
   return (
     <main className="page">
@@ -66,6 +76,30 @@ export default async function WorkoutDetailPage({ params }: { params: Promise<{ 
             Back
           </Link>
         </div>
+      </section>
+
+      <section className="card stack">
+        <h2>Sessions</h2>
+        {sessions && sessions.length > 0 ? (
+          <ul className="list">
+            {sessions.map((session) => (
+              <li key={session.id} className="list-item">
+                <strong>{formatRunDate(session.run_date)}</strong>
+                <span className="muted">
+                  {session.reps_completed} of {workout.reps} reps
+                  {session.effort !== null ? ` · effort ${session.effort}/5 (${EFFORT_LABELS[session.effort]})` : ""}
+                  {session.hardest_part ? ` · hardest: ${hardestLabel(session.hardest_part).toLowerCase()}` : ""}
+                </span>
+                {session.notes && <span className="muted">{session.notes}</span>}
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p className="muted">No sessions logged yet. Finished a run? Log it.</p>
+        )}
+        <Link href={`/workouts/${workout.id}/log`} className="btn btn-red">
+          Log a session
+        </Link>
       </section>
     </main>
   );

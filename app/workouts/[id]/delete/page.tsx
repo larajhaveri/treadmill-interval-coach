@@ -20,8 +20,8 @@ export default async function DeleteWorkoutPage({
         <p className="kicker">Delete workout</p>
         <h1>Are you sure?</h1>
         <p>
-          This permanently deletes <strong>{workout.name}</strong> ({describeWorkout(workout)}). You can&apos;t
-          undo it.
+          This permanently deletes <strong>{workout.name}</strong> ({describeWorkout(workout)}) and every session
+          you logged for it. You can&apos;t undo it.
         </p>
       </section>
       <section className="card stack">
