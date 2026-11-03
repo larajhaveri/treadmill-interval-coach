@@ -65,7 +65,10 @@ export default async function WorkoutDetailPage({ params }: { params: Promise<{ 
         </dl>
 
         <div className="row">
-          <Link href={`/workouts/${workout.id}/edit`} className="btn btn-red">
+          <Link href={`/workouts/${workout.id}/run`} className="btn btn-red">
+            Start run
+          </Link>
+          <Link href={`/workouts/${workout.id}/edit`} className="btn btn-plain">
             Edit
           </Link>
           <Link href={`/workouts/${workout.id}/delete`} className="btn btn-plain">
