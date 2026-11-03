@@ -127,3 +127,23 @@ Fun and playful, with a **red, yellow, black and white** palette: paper backgrou
 - **Second risk: Google sign-in setup.** It needs Google Cloud credentials and must be set to "In production," or only listed test users can sign in. For the live demo I need a spare Google account that has never used the app. Fallback: Supabase email and password.
 - **What I cut first:** (1) countdown preferences (feature 10), (2) the "what was hard" survey (keep a basic log with date, reps and effort), (3) run player polish.
 - **Backlog:** a "am I getting faster" trendline (rep speed over time) and pace-versus-rep-length analysis (can I hold a speed for longer reps), recorded human voice clips, music matched to the workout, outdoor navigation cues.
+
+## 8. Plan vs. Reality
+
+Added after building. Sections 1 to 7 above are unchanged, so you can compare what I planned with what happened. "Evidence" points to the pull request or file where you can check it.
+
+| # | What the plan said | What actually happened | Evidence |
+|---|---|---|---|
+| 1 | Real data: "14 of my own treadmill rep sessions" (12 intervals and 2 sharpeners) | The real count is 12 (9 intervals, 1 light intervals, 2 sharpeners). My plan's arithmetic was wrong. The dashboard shows 12 sessions and 40.6 km of hard reps. | Dashboard screenshot; `tests/dashboard.test.ts` |
+| 2 | Cut countdown preferences first if time ran short | Nothing had to be cut. The countdown preferences and the post-run survey were both built. | PR #29, PR #16 |
+| 3 | Music dimming on iPhone was the risk I was least sure about. I expected spoken cues to sometimes stop Spotify. | Tested on an iPhone in Chrome with Spotify playing: cues play over the music at normal volume. The music does not dim and does not pause, in both audio modes. So the failure was not the one I predicted, and dimming needs a native app. | `README.md` "Known limits"; PR #27 |
+| 4 | Not in the plan | The run player was silent on my phone. I first suspected the audio mode and changed it (PR #26), but that was not the cause. The cause was the iPhone silent switch, which mutes web audio. I added Test voice and Test beep buttons and a hint on the run page. | PR #26, PR #27, `prompts/run-player.md` |
+| 5 | Google sign-in set to "In production" | Still in testing mode. Only listed test users can sign in, so the demo and the stranger test needed their Google emails added in advance. | `README.md` "Known limits" |
+| 6 | Search, filter and sort by newest, longest rep, fastest speed | Search by name and sort by newest, oldest, longest rep or fastest speed. The Starred tab is the only filter. I added "oldest" and did not build a separate filter. | PR #14 |
+| 7 | settings table with a `voice` column | The `voice` column is left out: a web page cannot choose the phone's voice reliably across devices. An `updated_at` column was added. | `schema.md`, PR #29 |
+| 8 | Not in the plan | Distances above 1,000 m showed as "40,600 m", which looked clunky on the dashboard. I added a kilometer format. | PR #23 |
+| 9 | "Each user sees only their own data" | Also added checks so a runner can only star or log a session against their own workout. Without them, someone could attach a session to another runner's workout id. | `schema.md`, `tests/data-isolation.test.ts` |
+| 10 | Two tests | Both tests run the real database rules in a small in-memory Postgres (PGlite) on every push. I broke one on purpose first to see it fail (red), then fixed it (green). Later features added more tests, for 25 in total. | PR #20, `docs/tests.md` |
+| 11 | Not in the plan | A km/h and mph toggle, a smaller or collapsible workout list, tabs instead of one long scroll, and "start a workout" as the main action. I wanted them after using the app, and I deferred them on purpose to keep the required work finished. | `BACKLOG.md` |
+| 12 | Not in the plan | Known issue: the dashboard chart is missing one date label on a phone-width screen because labels collide. Not fixed. | `BACKLOG.md` |
+| 13 | At least 9 merged pull requests | 16 merged pull requests, all through issue, branch, pull request and merge. | The repository's closed pull requests |
