@@ -130,20 +130,21 @@ Fun and playful, with a **red, yellow, black and white** palette: paper backgrou
 
 ## 8. Plan vs. Reality
 
-Added after building. Sections 1 to 7 above are unchanged, so you can compare what I planned with what happened. "Evidence" points to the pull request or file where you can check it.
+Added after building. Sections 1 to 7 above are unchanged, so you can compare what I planned with what happened. "PR" numbers point to the pull request where you can check it.
 
-| # | What the plan said | What actually happened | Evidence |
-|---|---|---|---|
-| 1 | Real data: "14 of my own treadmill rep sessions" (12 intervals and 2 sharpeners) | The real count is 12 (9 intervals, 1 light intervals, 2 sharpeners). My plan's arithmetic was wrong. The dashboard shows 12 sessions and 40.6 km of hard reps. | Dashboard screenshot; `tests/dashboard.test.ts` |
-| 2 | Cut countdown preferences first if time ran short | Nothing had to be cut. The countdown preferences and the post-run survey were both built. | PR #29, PR #16 |
-| 3 | Music dimming on iPhone was the risk I was least sure about. I expected spoken cues to sometimes stop Spotify. | Tested on an iPhone in Chrome with Spotify playing: cues play over the music at normal volume. The music does not dim and does not pause, in both audio modes. So the failure was not the one I predicted, and dimming needs a native app. | `README.md` "Known limits"; PR #27 |
-| 4 | Not in the plan | The run player was silent on my phone. I first suspected the audio mode and changed it (PR #26), but that was not the cause. The cause was the iPhone silent switch, which mutes web audio. I added Test voice and Test beep buttons and a hint on the run page. | PR #26, PR #27, `prompts/run-player.md` |
-| 5 | Google sign-in set to "In production" | Still in testing mode. Only listed test users can sign in, so the demo and the stranger test needed their Google emails added in advance. | `README.md` "Known limits" |
-| 6 | Search, filter and sort by newest, longest rep, fastest speed | Search by name and sort by newest, oldest, longest rep or fastest speed. The Starred tab is the only filter. I added "oldest" and did not build a separate filter. | PR #14 |
-| 7 | settings table with a `voice` column | The `voice` column is left out: a web page cannot choose the phone's voice reliably across devices. An `updated_at` column was added. | `schema.md`, PR #29 |
-| 8 | Not in the plan | Distances above 1,000 m showed as "40,600 m", which looked clunky on the dashboard. I added a kilometer format. | PR #23 |
-| 9 | "Each user sees only their own data" | Also added checks so a runner can only star or log a session against their own workout. Without them, someone could attach a session to another runner's workout id. | `schema.md`, `tests/data-isolation.test.ts` |
-| 10 | Two tests | Both tests run the real database rules in a small in-memory Postgres (PGlite) on every push. I broke one on purpose first to see it fail (red), then fixed it (green). Later features added more tests, for 25 in total. | PR #20, `docs/tests.md` |
-| 11 | Not in the plan | A km/h and mph toggle, a smaller or collapsible workout list, tabs instead of one long scroll, and "start a workout" as the main action. I wanted them after using the app, and I deferred them on purpose to keep the required work finished. | `BACKLOG.md` |
-| 12 | Not in the plan | Known issue: the dashboard chart is missing one date label on a phone-width screen because labels collide. Not fixed. | `BACKLOG.md` |
-| 13 | At least 9 merged pull requests | 16 merged pull requests, all through issue, branch, pull request and merge. | The repository's closed pull requests |
+| Planned feature | Shipped / Changed / Cut | Status (Done/Backlogged) | Learning | What changed and why (one line) |
+|---|---|---|---|---|
+| 1. Sign up and log in | Changed | Done | Google sign-in in testing mode only lets listed test users in, so demo and test accounts must be added in advance. | The plan said "In production"; I left it in testing mode because publishing needs a homepage and privacy policy (PR #4). |
+| 2. Create workouts (data model) | Shipped | Done | "Number" in my plan was not precise enough for a database. | Whole numbers are `integer` and speeds and minutes are `numeric`, with rules such as "above 0" (PR #6, `schema.md`). |
+| 3. View, edit and delete workouts | Shipped | Done | Deleting a workout also deletes things that depend on it, and the runner should be told. | The delete page warns that its sessions and stars go too (PR #8). |
+| 4. Validation | Shipped | Done | Friendly means one specific message per rule, and never wiping what the runner typed. | Each field has its own plain-English message and keeps its value after a mistake (PR #10). |
+| 5. Stars | Shipped | Done | A junction table needs a rule that stops a runner starring someone else's workout. | Added insert checks on `stars` and `sessions` so a workout must be the runner's own (PR #12, `tests/data-isolation.test.ts`). |
+| 6. Find things | Changed | Done | Checking a sort value against a list can match built-in names; check against my own keys only. | Built search, sort (plus "oldest") and a Starred tab; no separate filter, because the tab covers my real need (PR #14). |
+| 7. (Own) Log a session and survey | Shipped | Done | Imported history had no effort or "hardest part", so those fields had to allow empty. | The log form requires them, but the database allows empty for old sessions (PR #16). |
+| 8. Dashboard | Shipped | Backlogged (one chart label) | Raw "40,600 m" looked clunky once real data was in; a missing x-axis label on a phone is still open. | Added a kilometer format after seeing the real dashboard (PR #18, PR #23). |
+| 9. (Own) Run player | Changed | Done | An agent's fix I had not tested was a guess; the real cause was the iPhone silent switch. | I added an audio-mode switch (PR #26), then Test voice and Test beep buttons and a silent-switch hint (PR #27). |
+| 10. (Own) Countdown preferences | Shipped | Done | I planned to cut this first but did not have to. | Built the `settings` table and Settings page, and left out the plan's `voice` column because a web page cannot pick the phone's voice reliably (PR #29). |
+| Real data: 14 sessions | Changed | Done | I should count my own data before writing a number in a plan. | The real count is 12 (9 intervals, 1 light intervals, 2 sharpeners); the dashboard shows 12 sessions and 40.6 km. |
+| Risk: music dimming on iPhone | Changed | Backlogged | I predicted spoken cues might stop the music; on iPhone Chrome with Spotify they play over it at normal volume with no dimming and no pause. | Dimming needs a native app, so the limit is documented in the README (PR #27). |
+| The two tests | Shipped | Done | Running the real database rules in a small in-memory Postgres (PGlite) tests security, not just my own code. | Both pass on every push; I broke one on purpose to see it fail (red) then fixed it (green); later features raised the total to 25 tests (PR #20). |
+| Units toggle (km/h and mph), smaller workout list, top navigation, onboarding | Cut | Backlogged | After using the app I wanted these, but they would have put the required work at risk. | Written down in `BACKLOG.md` instead of built. |
