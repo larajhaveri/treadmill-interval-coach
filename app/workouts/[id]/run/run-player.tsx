@@ -302,7 +302,8 @@ export default function RunPlayer({ config, workoutId }: Props) {
         )}
         <p className="muted">
           Screen stays awake: {wakeLock === "on" ? "yes" : wakeLock === "unavailable" ? "not supported on this device" : "not yet"}.
-          Your music may pause when a cue speaks on some iPhones; that is a known limit of web pages.
+          No sound? Switch off the silent switch on the side of your iPhone (no orange showing) and turn the volume up.
+          Cues play over your music; a web page cannot make the music quieter while a cue speaks.
         </p>
         <details>
           <summary>See the whole timeline</summary>

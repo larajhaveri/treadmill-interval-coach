@@ -36,3 +36,11 @@ On my phone the music kept playing but I heard no spoken cues. The agent had set
 ## Second follow-up: no voice in either audio mode
 
 On my phone the cue text appeared on screen but I heard nothing in either audio mode, so the audio mode was not the cause. To find out what is, the run page now has a "Test voice" button, a "Test beep" button, and a line that reports what the speech engine did (started, finished, or an error, and how many voices the phone has). It also picks an English voice by name before speaking, because some phones need that.
+
+## Result of the phone test
+
+Cause of the missing voice: the iPhone's silent switch was on, which mutes web audio. With it off, the cues were spoken. The browser on my phone is Google Chrome.
+
+Music result (iPhone, Chrome, Spotify playing): in both audio modes ("Cue first" and "Keep music playing") the cue was spoken over the music at normal volume. The music did not dim and did not pause. There was no difference between the two modes. So the risk in PLAN.md is settled: the cues work, but the music is not dimmed. Dimming would need a native app, so it stays a known limitation (and a backlog item).
+
+The run page now tells the runner to switch off the silent switch if there is no sound.
