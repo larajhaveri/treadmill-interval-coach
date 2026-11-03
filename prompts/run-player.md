@@ -25,3 +25,10 @@ Branch: `feature/run-player`. Agent: Claude Code (Claude Sonnet 5.5). This is on
 - The page asks the phone to treat the sound as background sound (`audioSession.type = "ambient"`). That is an attempt, not a promise.
 - Speech needs a tap to start on iPhones, so the first cue is spoken inside the Start tap.
 - Speed is shown in km/h only. A units toggle (km/h or mph) is in my backlog.
+
+## Follow-up after my first phone test
+
+On my phone the music kept playing but I heard no spoken cues. The agent had set the audio mode to `ambient` without testing it; my prototype used `transient`. The fix:
+- The run page now defaults to `transient` (cues are heard clearly, music may pause), like the prototype.
+- A menu lets me choose "Keep music playing (cues may be quiet)" instead, so I can compare both on my phone.
+- After Start, the page shows what audio mode the phone reports, so my test result is a fact and not a guess.
