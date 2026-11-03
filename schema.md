@@ -1,7 +1,7 @@
 # Database schema
 
 The database is Supabase (Postgres). The SQL that created it is in `supabase/migrations/` (run in order,
-`0001` to `0004`). This file describes what exists **today** and compares it with section 3 of `PLAN.md`.
+`0001` to `0005`). This file describes what exists **today** and compares it with section 3 of `PLAN.md`.
 
 ## Diagram
 
@@ -11,6 +11,7 @@ erDiagram
     users ||--o{ sessions : logs
     workouts ||--o{ sessions : "is run as"
     users ||--o{ stars : makes
+    users ||--o| settings : has
     workouts ||--o{ stars : "is starred in"
 ```
 
@@ -18,6 +19,7 @@ Relationships:
 - **users to workouts:** one-to-many (a runner has many workouts; each workout belongs to one runner).
 - **workouts to sessions:** one-to-many (a workout can be run many times; each session is one run of one workout).
 - **users to sessions:** one-to-many.
+- **users to settings:** one-to-one (a runner has at most one settings row; no row means the defaults).
 - **users to workouts through stars:** many-to-many (a runner can star many workouts; the `stars` table links them).
 
 ## Tables
@@ -73,12 +75,25 @@ One row per completed run of a workout.
 
 The primary key is the pair (user_id, workout_id), so a runner can star a workout only once.
 
+### settings (migration 0005)
+One row per runner, holding how the run player counts down. No row means the defaults.
+
+| Column | Type | Notes |
+|---|---|---|
+| user_id | uuid | primary key and foreign key to users.id, so there is at most one row per runner |
+| lead_sec | integer | heads-up before each change: 10, 20 (default) or 30 |
+| countdown_to_walk_sec | integer | spoken "5, 4, 3, 2, 1" before a walk or cool-down: 0 (off, default), 5 or 10 |
+| countdown_to_rep_sec | integer | spoken countdown before the next rep: 0 (off, default), 5, 10 or 15 |
+| encouragement | text | off, light (default) or frequent |
+| updated_at | timestamptz | default now() |
+
 ## Security
 
 Row-level security is switched on for every table. With it on, the database refuses everything by default and
 the policies are the exceptions:
 - A runner can read and change only rows whose `user_id` (or, for `users`, `id`) is their own.
 - A runner can add a `stars` or `sessions` row only for one of their own workouts.
+- A runner can create and change only their own `settings` row.
 
 `tests/data-isolation.test.ts` runs these real policies and proves that a second account sees nothing of the first.
 
@@ -86,7 +101,8 @@ the policies are the exceptions:
 
 | Plan (PLAN.md section 3) | What exists | Why it differs |
 |---|---|---|
-| 5 tables: users, workouts, sessions, stars, settings | 4 tables: users, workouts, sessions, stars | `settings` belongs to feature 10 (countdown preferences), which is not built yet. This file is updated when it is. |
+| 5 tables: users, workouts, sessions, stars, settings | 5 tables, the same ones | Built with feature 10 (countdown preferences). |
+| settings: user_id, lead_sec, countdown choices, encouragement, voice | Same, minus `voice`, plus `updated_at` | A web page cannot choose the phone's voice reliably across devices, so there was nothing to save. |
 | Column types written as "number" | `integer` for whole numbers (reps, meters, seconds, effort), `numeric` for speeds and minutes | Postgres needs a precise type; whole numbers are stored as whole numbers. |
 | users: id, email, display_name, created_at | Same four columns | No difference. |
 | workouts: 14 columns | Same 14 columns | Added database rules (above 0, name not blank) that the plan only described as "required". |

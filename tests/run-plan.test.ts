@@ -15,6 +15,8 @@ const config: RunConfig = {
   coolSpeed: 7,
   lead: 20,
   encourage: "off",
+  countdownToWalk: 0,
+  countdownToRep: 0,
 };
 
 describe("run plan: timeline", () => {
@@ -80,5 +82,41 @@ describe("run plan: cues", () => {
     const withPraise = buildCues(tl, { ...config, encourage: "frequent" });
     expect(withPraise.length).toBeGreaterThan(cues.length);
     expect(withPraise.filter((c) => c.pri === 0).length).toBeGreaterThan(0);
+  });
+});
+
+describe("run plan: countdowns", () => {
+  const tl = buildTimeline(config);
+
+  it("adds no countdown numbers when both countdowns are off", () => {
+    const cues = buildCues(tl, config);
+    expect(cues.some((c) => /^\d+$/.test(c.text))).toBe(false);
+  });
+
+  it("counts 5, 4, 3, 2, 1 one second apart before each rep, and ends on the 'Go' cue", () => {
+    const cues = buildCues(tl, { ...config, countdownToRep: 5 });
+    const rep2Start = tl.segs.find((s) => s.label === "Rep 2 of 5")!.start;
+    const numbers = cues.filter((c) => /^\d+$/.test(c.text) && c.t >= rep2Start - 5 && c.t < rep2Start);
+    expect(numbers.map((c) => c.text)).toEqual(["5", "4", "3", "2", "1"]);
+    expect(numbers.map((c) => c.t)).toEqual([rep2Start - 5, rep2Start - 4, rep2Start - 3, rep2Start - 2, rep2Start - 1]);
+    expect(cues.find((c) => c.t === rep2Start)?.text).toContain("Go. Rep 2 of 5");
+  });
+
+  it("counts down before a walk with its own length, separate from the rep countdown", () => {
+    const cues = buildCues(tl, { ...config, countdownToWalk: 10 });
+    const walkStart = tl.segs.find((s) => s.kind === "walk")!.start;
+    const numbers = cues.filter((c) => /^\d+$/.test(c.text) && c.t >= walkStart - 10 && c.t < walkStart);
+    expect(numbers).toHaveLength(10);
+    // Reps have no countdown here, so the first rep gets none.
+    const firstRepStart = tl.segs.find((s) => s.kind === "rep")!.start;
+    expect(cues.some((c) => /^\d+$/.test(c.text) && c.t >= firstRepStart - 5 && c.t < firstRepStart)).toBe(false);
+  });
+
+  it("keeps other cues out of the way while the countdown is speaking", () => {
+    const cues = buildCues(tl, { ...config, countdownToWalk: 10, encourage: "frequent" });
+    for (const seg of tl.segs.filter((s) => s.kind === "walk")) {
+      const inside = cues.filter((c) => c.t >= seg.start - 11 && c.t < seg.start && !/^\d+$/.test(c.text));
+      expect(inside).toEqual([]);
+    }
   });
 });

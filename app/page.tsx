@@ -123,6 +123,9 @@ export default async function HomePage({
         <Link href="/dashboard" className="btn btn-plain">
           Dashboard
         </Link>
+        <Link href="/settings" className="btn btn-plain">
+          Settings
+        </Link>
         {!profile && (
           <p className="notice" role="alert">
             Your account row was not found. Please log out and back in.
