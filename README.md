@@ -19,8 +19,8 @@ you would like to try it, ask me to add your Google email.
 - **Log a session:** date, reps finished, effort from 1 to 5, and what was hardest.
 - **Dashboard:** session count, total hard-rep distance, average rep speed, and a bar chart of hard-rep
   distance per session.
-
-Still being built: the run player (timed spoken and on-screen cues) and countdown preferences. See `PLAN.md`.
+- **Run player:** press Start on a workout for timed spoken and on-screen cues (speed to set, heads-up, distance to go).
+- **Settings:** choose the heads-up time, a spoken countdown before a walk or the next rep, and how much encouragement you hear.
 
 ## Tools
 
@@ -46,7 +46,7 @@ Still being built: the run player (timed spoken and on-screen cues) and countdow
 You need Node 22 and a free Supabase project.
 
 1. `npm install`
-2. In Supabase, open **SQL Editor** and run the files in `supabase/migrations/` in order (`0001` to `0004`).
+2. In Supabase, open **SQL Editor** and run the files in `supabase/migrations/` in order (`0001` to `0005`).
 3. In Supabase, turn on Google under **Authentication → Providers** (this needs a Google Cloud OAuth client).
 4. Copy `.env.example` to `.env.local` and fill in your Supabase project URL and publishable key
    (Supabase → Project Settings → API Keys). Never use the secret key.

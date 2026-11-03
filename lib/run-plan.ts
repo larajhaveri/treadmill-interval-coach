@@ -3,6 +3,7 @@
 // This is the cue logic from my one-page prototype, rebuilt and typed.
 
 import type { Workout } from "./workouts";
+import { DEFAULT_SETTINGS, type Settings } from "./settings";
 
 export type RunConfig = {
   warmMin: number; // 0 means no warm-up
@@ -17,6 +18,8 @@ export type RunConfig = {
   coolSpeed: number;
   lead: number; // heads-up, seconds before each change
   encourage: "off" | "light" | "frequent";
+  countdownToWalk: number; // spoken "5, 4, 3, 2, 1" before a walk or the cool-down; 0 means off
+  countdownToRep: number; // spoken countdown before the next rep; 0 means off
 };
 
 export type Segment = {
@@ -36,7 +39,8 @@ export type Timeline = { segs: Segment[]; total: number };
 export type Cue = { t: number; text: string; pri: number };
 
 // Fills the gaps in a saved workout with sensible defaults (the optional boxes may be empty).
-export function configFromWorkout(w: Workout): RunConfig {
+// The runner's saved settings decide the heads-up, the countdowns and the encouragement.
+export function configFromWorkout(w: Workout, settings: Settings = DEFAULT_SETTINGS): RunConfig {
   return {
     warmMin: w.warmup_min ?? 0,
     warmSpeed: w.warmup_speed_kmh ?? 8,
@@ -48,8 +52,10 @@ export function configFromWorkout(w: Workout): RunConfig {
     walkAfterLast: false,
     coolMin: w.cooldown_min ?? 0,
     coolSpeed: w.cooldown_speed_kmh ?? 7,
-    lead: 20,
-    encourage: "light",
+    lead: settings.lead_sec,
+    encourage: settings.encouragement,
+    countdownToWalk: settings.countdown_to_walk_sec,
+    countdownToRep: settings.countdown_to_rep_sec,
   };
 }
 
@@ -178,7 +184,25 @@ export function buildCues(tl: Timeline, c: RunConfig): Cue[] {
     kept.push(...extra);
     kept.sort((a, b) => a.t - b.t);
   }
-  return kept;
+  return withCountdowns(kept, segs, c);
+}
+
+// Spoken "5, 4, 3, 2, 1" before a change. A countdown before a rep uses countdownToRep; before a
+// walk or the cool-down it uses countdownToWalk. While it counts, other cues stay quiet (the
+// "what to do now" cue at the start of the segment is kept), so the numbers are not talked over.
+function withCountdowns(cues: Cue[], segs: Segment[], c: RunConfig): Cue[] {
+  let result = cues;
+  segs.forEach((s, i) => {
+    if (i === 0) return;
+    const length = s.kind === "rep" ? c.countdownToRep : c.countdownToWalk;
+    // Skip it if it would start almost as soon as the previous segment does.
+    if (length <= 0 || s.start - length <= segs[i - 1].start + 5) return;
+
+    const from = s.start - length;
+    result = result.filter((cue) => cue.pri === 4 || cue.t < from - 1 || cue.t >= s.start);
+    for (let n = length; n >= 1; n--) result.push({ t: s.start - n, text: String(n), pri: 4 });
+  });
+  return result === cues ? cues : [...result].sort((a, b) => a.t - b.t || b.pri - a.pri);
 }
 
 // Which segment is the runner in, given seconds since the start?

@@ -138,4 +138,21 @@ describe("data isolation", () => {
       ),
     ).rejects.toThrow();
   });
+
+  it("keeps settings private: User B cannot read or change User A's settings", async () => {
+    await asUser(USER_A, () =>
+      db.query("insert into public.settings (user_id, countdown_to_rep_sec) values ($1, 10)", [USER_A]),
+    );
+    const list = await asUser(USER_B, () => db.query("select user_id from public.settings"));
+    expect(list.rows).toEqual([]);
+
+    const edited = await asUser(USER_B, () =>
+      db.query("update public.settings set countdown_to_rep_sec = 0 where user_id = $1", [USER_A]),
+    );
+    expect(edited.affectedRows).toBe(0);
+
+    await expect(
+      asUser(USER_B, () => db.query("insert into public.settings (user_id) values ($1)", [USER_A])),
+    ).rejects.toThrow();
+  });
 });
