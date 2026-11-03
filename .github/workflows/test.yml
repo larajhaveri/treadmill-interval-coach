@@ -1,0 +1,18 @@
+# Runs the tests every time code is pushed to GitHub.
+# A red cross next to a commit means a test failed; a green tick means they all passed.
+name: Tests
+
+on:
+  push:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm test
