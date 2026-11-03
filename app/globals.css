@@ -178,6 +178,19 @@ a.btn {
   width: 100%;
 }
 
+/* Friendly validation: a red outline on the box and a message under it. */
+.field input[aria-invalid="true"],
+.field textarea[aria-invalid="true"] {
+  border-color: var(--red);
+  background: #fff1f1;
+}
+
+.field-error {
+  color: var(--red);
+  font-weight: 800;
+  font-size: 0.9rem;
+}
+
 .field input:focus-visible,
 .field textarea:focus-visible {
   outline: 3px solid var(--yellow);

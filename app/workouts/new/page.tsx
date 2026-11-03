@@ -3,18 +3,12 @@ import { createClient } from "@/lib/supabase/server";
 import { createWorkout } from "../actions";
 import WorkoutForm from "../workout-form";
 
-export default async function NewWorkoutPage({
-  searchParams,
-}: {
-  searchParams: Promise<{ error?: string }>;
-}) {
+export default async function NewWorkoutPage() {
   const supabase = await createClient();
   const {
     data: { user },
   } = await supabase.auth.getUser();
   if (!user) redirect("/login");
-
-  const { error } = await searchParams;
 
   return (
     <main className="page">
@@ -23,7 +17,7 @@ export default async function NewWorkoutPage({
         <h1>Build your intervals</h1>
         <p>Fill in the numbers from your treadmill. Speeds are in km/h.</p>
       </section>
-      <WorkoutForm action={createWorkout} showError={Boolean(error)} submitLabel="Save workout" cancelHref="/" />
+      <WorkoutForm action={createWorkout} submitLabel="Save workout" cancelHref="/" />
     </main>
   );
 }
