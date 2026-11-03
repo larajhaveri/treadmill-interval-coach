@@ -2,15 +2,8 @@ import { getWorkoutOrNotFound } from "@/lib/get-workout";
 import { updateWorkout } from "../../actions";
 import WorkoutForm from "../../workout-form";
 
-export default async function EditWorkoutPage({
-  params,
-  searchParams,
-}: {
-  params: Promise<{ id: string }>;
-  searchParams: Promise<{ error?: string }>;
-}) {
+export default async function EditWorkoutPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
-  const { error } = await searchParams;
   const workout = await getWorkoutOrNotFound(id);
 
   return (
@@ -23,7 +16,6 @@ export default async function EditWorkoutPage({
       <WorkoutForm
         action={updateWorkout.bind(null, workout.id)}
         workout={workout}
-        showError={Boolean(error)}
         submitLabel="Save changes"
         cancelHref={`/workouts/${workout.id}`}
       />
