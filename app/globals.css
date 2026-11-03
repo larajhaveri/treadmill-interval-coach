@@ -326,3 +326,81 @@ a.btn {
   outline: 3px solid var(--yellow);
   outline-offset: 2px;
 }
+
+/* Log a session (feature 7) */
+.scale {
+  border: 0;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+
+.scale legend {
+  padding: 0;
+  font-weight: 800;
+  color: var(--soft);
+  font-size: 0.95rem;
+}
+
+.scale-options {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 6px;
+}
+
+.scale-option {
+  position: relative;
+  display: block;
+}
+
+.scale-option input {
+  position: absolute;
+  opacity: 0;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  cursor: pointer;
+}
+
+.scale-option span {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  min-height: 60px;
+  padding: 4px 2px;
+  border: 3px solid var(--ink);
+  border-radius: 12px;
+  background: var(--white);
+  text-align: center;
+}
+
+.scale-option strong {
+  font-size: 1.3rem;
+  line-height: 1;
+}
+
+.scale-option small {
+  font-size: 0.7rem;
+  font-weight: 800;
+  color: var(--soft);
+}
+
+.scale-option input:checked + span {
+  background: var(--yellow);
+}
+
+.scale-option input:focus-visible + span {
+  outline: 3px solid var(--red);
+  outline-offset: 2px;
+}
+
+.scale-invalid .scale-option span {
+  border-color: var(--red);
+  background: #fff1f1;
+}
