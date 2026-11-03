@@ -8,6 +8,11 @@ type Props = { config: RunConfig; workoutId: string };
 
 type AudioSessionNavigator = Navigator & { audioSession?: { type: string } };
 
+// How the phone treats our spoken cues next to other audio (like Spotify).
+// transient: the cue is heard clearly, and music may pause (this is what my prototype used).
+// ambient: music keeps playing, but on some iPhones the cue is quiet or silent.
+type AudioMode = "transient" | "ambient";
+
 // The run screen: big timer, the speed to set, what's next, and spoken cues on a schedule.
 export default function RunPlayer({ config, workoutId }: Props) {
   const tl = useMemo(() => buildTimeline(config), [config]);
@@ -17,6 +22,8 @@ export default function RunPlayer({ config, workoutId }: Props) {
   const [running, setRunning] = useState(false);
   const [lastCue, setLastCue] = useState("");
   const [wakeLock, setWakeLock] = useState<"on" | "off" | "unavailable">("off");
+  const [audioMode, setAudioMode] = useState<AudioMode>("transient");
+  const [audioStatus, setAudioStatus] = useState("");
 
   // Values the timer needs but the screen does not, so they live in refs.
   const baseRef = useRef(0); // ms already run before the latest start
@@ -121,12 +128,17 @@ export default function RunPlayer({ config, workoutId }: Props) {
   function start() {
     if (running) return;
     if (elapsed >= total * 1000) reset();
-    // Ask the phone to treat our sound as background sound. This is an attempt: iOS may still pause music.
+    // Ask the phone how to treat our sound. This is an attempt: not every browser supports it.
     try {
       const nav = navigator as AudioSessionNavigator;
-      if (nav.audioSession) nav.audioSession.type = "ambient";
+      if (nav.audioSession) {
+        nav.audioSession.type = audioMode;
+        setAudioStatus(`The phone reports audio mode: ${nav.audioSession.type}.`);
+      } else {
+        setAudioStatus("This browser cannot set an audio mode, so it uses its own default.");
+      }
     } catch {
-      // not supported
+      setAudioStatus("The audio mode could not be set.");
     }
     startedAtRef.current = Date.now();
     setRunning(true);
@@ -232,6 +244,14 @@ export default function RunPlayer({ config, workoutId }: Props) {
             Reset
           </button>
         </div>
+        <label className="field">
+          When a cue speaks
+          <select value={audioMode} onChange={(event) => setAudioMode(event.target.value as AudioMode)} disabled={running}>
+            <option value="transient">Cue first: I hear every cue (music may pause)</option>
+            <option value="ambient">Keep music playing (cues may be quiet)</option>
+          </select>
+        </label>
+        {audioStatus && <p className="muted">{audioStatus}</p>}
         {done && (
           <Link href={`/workouts/${workoutId}/log`} className="btn btn-red">
             Log this session
