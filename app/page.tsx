@@ -120,6 +120,9 @@ export default async function HomePage({
         <Link href="/workouts/new" className="btn btn-red">
           Add a workout
         </Link>
+        <Link href="/dashboard" className="btn btn-plain">
+          Dashboard
+        </Link>
         {!profile && (
           <p className="notice" role="alert">
             Your account row was not found. Please log out and back in.
