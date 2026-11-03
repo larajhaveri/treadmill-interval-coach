@@ -69,7 +69,10 @@ Two tests run on every push (see `docs/tests.md` for plain-English explanations)
 
 ## Known limits
 
-- Music on an iPhone may stop instead of dimming when a spoken cue plays. A web page cannot override that on iOS.
-  This is the biggest risk in `PLAN.md`, and the run player will document what actually happens.
+- **Music and spoken cues on iPhone (tested 3 Nov 2026, iPhone, Chrome):** with Spotify playing, the cues were spoken
+  over the music at normal volume. The music did not dim and did not pause, in either audio mode the run page offers.
+  A web page cannot lower another app's music, so real dimming would need a native app. This was the biggest risk in `PLAN.md`.
+- **The iPhone silent switch mutes the cues.** With the switch on (orange showing), the cue text appears but nothing is
+  heard. Switch it off and turn the volume up. The run page says so.
 - Sign-in works only for Google accounts added as test users.
 - The demo data are my own treadmill rep sessions (numbers only; health notes were removed before import).

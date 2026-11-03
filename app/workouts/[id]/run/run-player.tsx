@@ -24,6 +24,7 @@ export default function RunPlayer({ config, workoutId }: Props) {
   const [wakeLock, setWakeLock] = useState<"on" | "off" | "unavailable">("off");
   const [audioMode, setAudioMode] = useState<AudioMode>("transient");
   const [audioStatus, setAudioStatus] = useState("");
+  const [voiceStatus, setVoiceStatus] = useState(""); // what the speech engine did last
 
   // Values the timer needs but the screen does not, so they live in refs.
   const baseRef = useRef(0); // ms already run before the latest start
@@ -42,14 +43,43 @@ export default function RunPlayer({ config, workoutId }: Props) {
 
   function speak(text: string) {
     setLastCue(text);
-    if (!("speechSynthesis" in window)) return;
+    if (!("speechSynthesis" in window)) {
+      setVoiceStatus("This browser has no speech engine.");
+      return;
+    }
     const utterance = new SpeechSynthesisUtterance(text);
     utterance.lang = "en-US";
+    // Some phones need an English voice picked by name before they will speak.
+    const voices = speechSynthesis.getVoices();
+    const english = voices.find((voice) => /^en/i.test(voice.lang));
+    if (english) utterance.voice = english;
+    utterance.onstart = () => setVoiceStatus(`Speaking now (${voices.length} voices on this phone).`);
+    utterance.onend = () => setVoiceStatus(`Finished speaking (${voices.length} voices on this phone).`);
+    utterance.onerror = (event) => setVoiceStatus(`Speech error: ${event.error}.`);
     if (speechSynthesis.speaking || speechSynthesis.pending) {
       speechSynthesis.cancel();
       setTimeout(() => speechSynthesis.speak(utterance), 80);
     } else {
       speechSynthesis.speak(utterance);
+    }
+  }
+
+  // A short beep, to tell "no sound at all" apart from "no voice".
+  function testTone() {
+    try {
+      const AudioContextClass = window.AudioContext ?? (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext;
+      const context = new AudioContextClass();
+      const oscillator = context.createOscillator();
+      const gain = context.createGain();
+      oscillator.frequency.value = 880;
+      gain.gain.value = 0.3;
+      oscillator.connect(gain);
+      gain.connect(context.destination);
+      oscillator.start();
+      oscillator.stop(context.currentTime + 0.6);
+      setVoiceStatus("Played a beep. Did you hear it?");
+    } catch {
+      setVoiceStatus("This browser could not play a beep.");
     }
   }
 
@@ -252,6 +282,19 @@ export default function RunPlayer({ config, workoutId }: Props) {
           </select>
         </label>
         {audioStatus && <p className="muted">{audioStatus}</p>}
+        <div className="row">
+          <button type="button" className="btn btn-plain" onClick={() => speak("Rep 3 of 5 in 20 seconds. Set speed to 10 point 2.")}>
+            Test voice
+          </button>
+          <button type="button" className="btn btn-plain" onClick={testTone}>
+            Test beep
+          </button>
+        </div>
+        {voiceStatus && (
+          <p className="muted" aria-live="polite">
+            {voiceStatus}
+          </p>
+        )}
         {done && (
           <Link href={`/workouts/${workoutId}/log`} className="btn btn-red">
             Log this session
@@ -259,7 +302,8 @@ export default function RunPlayer({ config, workoutId }: Props) {
         )}
         <p className="muted">
           Screen stays awake: {wakeLock === "on" ? "yes" : wakeLock === "unavailable" ? "not supported on this device" : "not yet"}.
-          Your music may pause when a cue speaks on some iPhones; that is a known limit of web pages.
+          No sound? Switch off the silent switch on the side of your iPhone (no orange showing) and turn the volume up.
+          Cues play over your music; a web page cannot make the music quieter while a cue speaks.
         </p>
         <details>
           <summary>See the whole timeline</summary>
