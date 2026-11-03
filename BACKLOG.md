@@ -5,6 +5,8 @@ Ideas from using the app, plus known gaps. None of these are built.
 ## Home screen and navigation
 - **Too many workouts on the home page.** With 15 workouts the list takes over the screen. Make each row smaller or show several per row, and make the list collapsible.
 - **The main action should be starting a run, not browsing.** The first thing on opening the app should be "start a workout" (for example the last one run, or the starred ones).
+- **Wasted space, and the main links are hard to find.** Settings, Add a workout and Dashboard are all at the bottom of a long page. Move them to a top navigation bar, and put Log out in the top right.
+- **Onboarding.** A new user should get a short guided tour of how to use the app (add a workout, run it, log a session, see the dashboard).
 - **Tabs instead of one long scroll.** Replace "scroll past workouts, then Add a workout, then Dashboard" with a tab bar (for example Workouts, Add, Dashboard).
 
 ## Units and display
