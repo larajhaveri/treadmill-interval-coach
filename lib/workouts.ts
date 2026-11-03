@@ -25,3 +25,11 @@ export function describeWorkout(w: Pick<Workout, "reps" | "rep_distance_m" | "re
 export function hardDistanceMeters(w: Pick<Workout, "reps" | "rep_distance_m">) {
   return w.reps * w.rep_distance_m;
 }
+
+// "10 min at 8 km/h", or a dash when the runner left it blank.
+export function describeSegment(minutes: number | null, speed: number | null) {
+  if (minutes === null && speed === null) return "Not set";
+  const time = minutes === null ? "" : `${minutes} min`;
+  const pace = speed === null ? "" : `${speed} km/h`;
+  return [time, pace].filter(Boolean).join(" at ");
+}
