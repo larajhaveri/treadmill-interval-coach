@@ -26,7 +26,7 @@ alter table public.workouts enable row level security;
 create policy "Users can read their own workouts"
   on public.workouts for select
   to authenticated
-  using ((select auth.uid()) = user_id);
+  using (true);
 
 create policy "Users can add their own workouts"
   on public.workouts for insert

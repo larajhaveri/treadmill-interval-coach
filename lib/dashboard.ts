@@ -24,7 +24,7 @@ export type DashboardStats = {
 
 // Meters run hard in one session: reps finished × the workout's rep distance.
 export function hardMeters(session: SessionForStats): number {
-  return session.workouts ? session.reps_completed * session.workouts.rep_distance_m : 0;
+  return session.workouts ? session.reps_completed + session.workouts.rep_distance_m : 0;
 }
 
 // "Oct 14". Built from the parts so the day never shifts with time zones.
