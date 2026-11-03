@@ -404,3 +404,68 @@ a.btn {
   border-color: var(--red);
   background: #fff1f1;
 }
+
+/* Dashboard (feature 8) */
+.stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 12px;
+}
+
+.stat {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  background: var(--white);
+  border: 3px solid var(--ink);
+  border-radius: 20px;
+  box-shadow: 5px 5px 0 var(--ink);
+  padding: 14px;
+}
+
+.stat-label {
+  font-weight: 800;
+  color: var(--soft);
+  font-size: 0.9rem;
+}
+
+.stat-value {
+  font-family: "Lilita One", system-ui, sans-serif;
+  font-size: 1.9rem;
+  line-height: 1.1;
+}
+
+.chart-box {
+  width: 100%;
+  min-width: 0;
+}
+
+.chart-tip {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  background: var(--white);
+  border: 2px solid var(--ink);
+  border-radius: 10px;
+  padding: 6px 10px;
+  font-weight: 700;
+}
+
+details summary {
+  cursor: pointer;
+  font-weight: 800;
+}
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 8px;
+}
+
+.data-table th,
+.data-table td {
+  text-align: left;
+  padding: 6px 4px;
+  border-bottom: 2px solid var(--ink);
+  font-weight: 700;
+}
