@@ -3,7 +3,7 @@ import { getWorkoutOrNotFound } from "@/lib/get-workout";
 import { createClient } from "@/lib/supabase/server";
 import StarButton from "../star-button";
 import { EFFORT_LABELS, formatRunDate, hardestLabel, type Session } from "@/lib/sessions";
-import { describeSegment, describeWorkout, hardDistanceMeters } from "@/lib/workouts";
+import { describeSegment, describeWorkout, formatDistance, hardDistanceMeters } from "@/lib/workouts";
 
 export default async function WorkoutDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
@@ -44,7 +44,7 @@ export default async function WorkoutDetailPage({ params }: { params: Promise<{ 
           </div>
           <div>
             <dt>Hard distance</dt>
-            <dd>{hardDistanceMeters(workout)} m</dd>
+            <dd>{formatDistance(hardDistanceMeters(workout))}</dd>
           </div>
           <div>
             <dt>Walk break</dt>

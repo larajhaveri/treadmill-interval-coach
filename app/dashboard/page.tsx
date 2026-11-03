@@ -2,6 +2,7 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { calculateDashboard, type SessionForStats } from "@/lib/dashboard";
+import { formatDistance } from "@/lib/workouts";
 import DashboardChart from "./dashboard-chart";
 
 export default async function DashboardPage() {
@@ -44,7 +45,7 @@ export default async function DashboardPage() {
             </div>
             <div className="stat">
               <span className="stat-label">Hard-rep distance</span>
-              <span className="stat-value">{stats.totalHardMeters.toLocaleString("en-US")} m</span>
+              <span className="stat-value">{formatDistance(stats.totalHardMeters)}</span>
             </div>
             <div className="stat">
               <span className="stat-label">Average rep speed</span>
@@ -61,14 +62,14 @@ export default async function DashboardPage() {
                 <thead>
                   <tr>
                     <th scope="col">Date</th>
-                    <th scope="col">Hard-rep meters</th>
+                    <th scope="col">Hard-rep distance</th>
                   </tr>
                 </thead>
                 <tbody>
                   {stats.points.map((point) => (
                     <tr key={point.id}>
                       <td>{point.runDate}</td>
-                      <td>{point.meters.toLocaleString("en-US")} m</td>
+                      <td>{formatDistance(point.meters)}</td>
                     </tr>
                   ))}
                 </tbody>

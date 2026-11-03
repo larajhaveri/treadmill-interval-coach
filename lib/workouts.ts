@@ -33,3 +33,10 @@ export function describeSegment(minutes: number | null, speed: number | null) {
   const pace = speed === null ? "" : `${speed} km/h`;
   return [time, pace].filter(Boolean).join(" at ");
 }
+
+// Long distances read better in kilometers: 800 m stays "800 m", 40600 becomes "40.6 km".
+export function formatDistance(meters: number): string {
+  if (meters < 1000) return `${meters} m`;
+  const km = parseFloat((meters / 1000).toFixed(2));
+  return `${km.toLocaleString("en-US")} km`;
+}

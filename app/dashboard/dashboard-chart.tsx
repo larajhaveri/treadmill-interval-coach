@@ -2,6 +2,7 @@
 
 import { Bar, BarChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 import type { ChartPoint } from "@/lib/dashboard";
+import { formatDistance } from "@/lib/workouts";
 
 const RED = "#D8222A";
 const INK = "#141414";
@@ -15,7 +16,7 @@ function BarTooltip({ active, payload }: { active?: boolean; payload?: { payload
   return (
     <div className="chart-tip">
       <strong>{point.label}</strong>
-      <span>{point.meters.toLocaleString("en-US")} m of hard reps</span>
+      <span>{formatDistance(point.meters)} of hard reps</span>
     </div>
   );
 }
@@ -25,7 +26,7 @@ export default function DashboardChart({ points }: { points: ChartPoint[] }) {
   return (
     <div
       role="img"
-      aria-label={`Bar chart of hard-rep meters for each of ${points.length} sessions. The same numbers are in the table below.`}
+      aria-label={`Bar chart of hard-rep distance for each of ${points.length} sessions. The same numbers are in the table below.`}
       className="chart-box"
     >
       <ResponsiveContainer width="100%" height={260}>
@@ -33,11 +34,11 @@ export default function DashboardChart({ points }: { points: ChartPoint[] }) {
           <CartesianGrid vertical={false} stroke={GRID} />
           <XAxis dataKey="label" tickLine={false} axisLine={{ stroke: INK }} tick={{ fill: MUTED, fontSize: 12 }} interval="preserveStartEnd" />
           <YAxis
-            width={48}
+            width={56}
             tickLine={false}
             axisLine={false}
             tick={{ fill: MUTED, fontSize: 12 }}
-            tickFormatter={(value: number) => value.toLocaleString("en-US")}
+            tickFormatter={(value: number) => formatDistance(value)}
           />
           <Tooltip content={<BarTooltip />} cursor={{ fill: "rgba(20,20,20,0.06)" }} />
           <Bar dataKey="meters" fill={RED} radius={[4, 4, 0, 0]} maxBarSize={28} isAnimationActive={false} />
