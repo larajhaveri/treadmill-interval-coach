@@ -301,3 +301,28 @@ a.btn {
   outline: 3px solid var(--yellow);
   outline-offset: 3px;
 }
+
+/* Search and sort (feature 6) */
+.find-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.field select {
+  font: inherit;
+  font-weight: 700;
+  font-size: 1rem;
+  min-height: 48px;
+  padding: 8px 12px;
+  border: 3px solid var(--ink);
+  border-radius: 12px;
+  background: var(--white);
+  color: var(--ink);
+  width: 100%;
+}
+
+.field select:focus-visible {
+  outline: 3px solid var(--yellow);
+  outline-offset: 2px;
+}
