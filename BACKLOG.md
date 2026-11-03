@@ -1,0 +1,29 @@
+# Backlog (for after the class project)
+
+Ideas from using the app, plus known gaps. None of these are built.
+
+## Home screen and navigation
+- **Too many workouts on the home page.** With 15 workouts the list takes over the screen. Make each row smaller or show several per row, and make the list collapsible.
+- **The main action should be starting a run, not browsing.** The first thing on opening the app should be "start a workout" (for example the last one run, or the starred ones).
+- **Wasted space, and the main links are hard to find.** Settings, Add a workout and Dashboard are all at the bottom of a long page. Move them to a top navigation bar, and put Log out in the top right.
+- **Onboarding.** A new user should get a short guided tour of how to use the app (add a workout, run it, log a session, see the dashboard).
+- **Tabs instead of one long scroll.** Replace "scroll past workouts, then Add a workout, then Dashboard" with a tab bar (for example Workouts, Add, Dashboard).
+
+## Units and display
+- **Units toggle:** km/h or mph for speed, km or miles for distance. This needs a units column in the `settings` table and conversion on every screen, both forms, the validation ranges and the dashboard.
+- **Dashboard chart:** the x-axis label for one date is missing because labels collide on a phone-width screen.
+
+## From PLAN.md
+- Rep-speed trendline ("am I getting faster").
+- Pace versus rep length (can I hold a speed for longer reps).
+- Recorded human voice clips instead of the phone's voice.
+- Music matched to the workout.
+- Outdoor navigation cues.
+- **Music dimming while a cue speaks:** this needs a native app (see the tested result below).
+
+## Tested result: music and spoken cues on iPhone
+Tested on an iPhone in Google Chrome with Spotify playing. The cues are spoken over the music at normal volume. The music does not dim and does not pause, in both audio modes, and there is no difference between them. The earlier silent voice was caused by the iPhone's silent switch, which mutes web audio.
+
+## Known gaps
+- Google sign-in is in testing mode: only listed test users can sign in. Publishing needs a homepage and a privacy policy page.
+- The plan's `voice` setting was left out: a web page cannot choose the phone's voice reliably across devices.

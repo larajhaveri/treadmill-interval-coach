@@ -64,6 +64,7 @@ Two tests run on every push (see `docs/tests.md` for plain-English explanations)
 
 - `PLAN.md`: the plan written before building
 - `schema.md`: the database, compared with the plan
+- `BACKLOG.md`: ideas and known gaps for after the project
 - `docs/tests.md`: the two tests
 - `prompts/`: the prompts I gave the coding agent, one file per feature
 
