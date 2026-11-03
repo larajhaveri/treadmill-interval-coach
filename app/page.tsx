@@ -38,8 +38,10 @@ export default async function HomePage() {
           <ul className="list">
             {workouts.map((w) => (
               <li key={w.id} className="list-item">
-                <strong>{w.name}</strong>
-                <span className="muted">{describeWorkout(w)}</span>
+                <Link href={`/workouts/${w.id}`} className="list-link">
+                  <strong>{w.name}</strong>
+                  <span className="muted">{describeWorkout(w)}</span>
+                </Link>
               </li>
             ))}
           </ul>
