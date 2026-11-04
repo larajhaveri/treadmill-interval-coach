@@ -21,6 +21,16 @@ Ideas from using the app, plus known gaps. None of these are built.
 - Outdoor navigation cues.
 - **Music dimming while a cue speaks:** this needs a native app (see the tested result below).
 
+## From the stranger test (Tester A, a street runner)
+- **Say what the app is for on the first screen.** He did not realize it is for treadmills: "I did not know that this was for a treadmill." A new account shows no description. This belongs with the onboarding idea.
+- **A short follow-up cue after a change,** to confirm the runner switched ("not very pokey").
+- **More than one "hardest part",** or a scale, instead of a single choice.
+- **Transition buffers around speed changes.** With a short walk, the 20 second heads-up cuts most of the rest. The Settings page lets a runner choose 10 seconds, but he never opened it.
+- **Make past sessions and the notes box easier to find.** Both exist; he asked how to go back to a session and wished for a comment box.
+- **Spotify playlist and coach-style motivation,** like the Nike Run Club coach he already uses.
+- **Better button placement.**
+- **Open question:** some gym treadmills can store a whole program, so a runner presses no buttons mid-run. Check how much that overlaps with this app for people who have those treadmills.
+
 ## Tested result: music and spoken cues on iPhone
 Tested on an iPhone in Google Chrome with Spotify playing. The cues are spoken over the music at normal volume. The music does not dim and does not pause, in both audio modes, and there is no difference between them. The earlier silent voice was caused by the iPhone's silent switch, which mutes web audio.
 
