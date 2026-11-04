@@ -70,9 +70,14 @@ Two tests run on every push (see `docs/tests.md` for plain-English explanations)
 
 ## Known limits
 
-- **Music and spoken cues on iPhone (tested 3 Nov 2026, iPhone, Chrome):** with Spotify playing, the cues were spoken
-  over the music at normal volume. The music did not dim and did not pause, in either audio mode the run page offers.
-  A web page cannot lower another app's music, so real dimming would need a native app. This was the biggest risk in `PLAN.md`.
+- **Music and spoken cues on iPhone (tested twice on 3 Nov 2026, with different results):** in a test at my desk on
+  Chrome with Spotify playing, the cues were spoken over the music at normal volume, and the music did not dim or pause.
+  In a real run that evening, each cue paused my music and I had to restart it by hand. I do not know why the results
+  differ. A web page cannot lower another app's music, so real dimming would need a native app. This was the biggest
+  risk in `PLAN.md`.
+- **Known bugs from a real run (not fixed yet, listed in `BACKLOG.md`):** the screen can lock during a run even though the
+  page asks it to stay awake, and cues can be missed at the changes between a walk and a rep when that happens. Keep
+  the app open and the screen unlocked until this is fixed.
 - **The iPhone silent switch mutes the cues.** With the switch on (orange showing), the cue text appears but nothing is
   heard. Switch it off and turn the volume up. The run page says so.
 - Sign-in works only for Google accounts added as test users.
