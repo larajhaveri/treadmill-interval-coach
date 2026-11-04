@@ -71,28 +71,31 @@ export default function WorkoutForm({ action, workout, submitLabel, cancelHref }
       {field("name", "Workout name", { type: "text", placeholder: "5 × 600 m at 10.2" })}
 
       <h2>Warm-up</h2>
+      <p className="muted">Optional. Leave both boxes blank for no warm-up.</p>
       <div className="row">
-        {field("warmup_min", "Minutes", { type: "number", step: "0.5", inputMode: "decimal", placeholder: "10" })}
-        {field("warmup_speed_kmh", "Speed (km/h)", { type: "number", step: "0.1", inputMode: "decimal", placeholder: "8" })}
+        {field("warmup_min", "Length (minutes)", { type: "number", step: "0.5", inputMode: "decimal", placeholder: "e.g. 10" })}
+        {field("warmup_speed_kmh", "Speed (km/h)", { type: "number", step: "0.1", inputMode: "decimal", placeholder: "e.g. 8" })}
       </div>
 
       <h2>Hard reps</h2>
       <div className="row">
-        {field("reps", "Reps", { type: "number", step: "1", inputMode: "numeric", placeholder: "5" })}
-        {field("rep_distance_m", "Distance (m)", { type: "number", step: "50", inputMode: "numeric", placeholder: "600" })}
+        {field("reps", "Reps", { type: "number", step: "1", inputMode: "numeric", placeholder: "e.g. 5" })}
+        {field("rep_distance_m", "Distance (m)", { type: "number", step: "50", inputMode: "numeric", placeholder: "e.g. 600" })}
       </div>
-      {field("rep_speed_kmh", "Rep speed (km/h)", { type: "number", step: "0.1", inputMode: "decimal", placeholder: "10.2" })}
+      {field("rep_speed_kmh", "Rep speed (km/h)", { type: "number", step: "0.1", inputMode: "decimal", placeholder: "e.g. 10.2" })}
 
       <h2>Walk break</h2>
+      <p className="muted">How long you walk between reps. This one is in seconds.</p>
       <div className="row">
-        {field("walk_sec", "Seconds", { type: "number", step: "5", inputMode: "numeric", placeholder: "90" })}
-        {field("walk_speed_kmh", "Speed (km/h)", { type: "number", step: "0.1", inputMode: "decimal", placeholder: "5" })}
+        {field("walk_sec", "Length (seconds)", { type: "number", step: "5", inputMode: "numeric", placeholder: "e.g. 90" })}
+        {field("walk_speed_kmh", "Speed (km/h)", { type: "number", step: "0.1", inputMode: "decimal", placeholder: "e.g. 5" })}
       </div>
 
       <h2>Cool-down</h2>
+      <p className="muted">Optional. Leave both boxes blank for no cool-down.</p>
       <div className="row">
-        {field("cooldown_min", "Minutes", { type: "number", step: "0.5", inputMode: "decimal", placeholder: "10" })}
-        {field("cooldown_speed_kmh", "Speed (km/h)", { type: "number", step: "0.1", inputMode: "decimal", placeholder: "7" })}
+        {field("cooldown_min", "Length (minutes)", { type: "number", step: "0.5", inputMode: "decimal", placeholder: "e.g. 10" })}
+        {field("cooldown_speed_kmh", "Speed (km/h)", { type: "number", step: "0.1", inputMode: "decimal", placeholder: "e.g. 7" })}
       </div>
 
       <label className="field">
