@@ -20,4 +20,4 @@ I asked why the README had nothing about user interviews, and said I needed them
 ## Decisions
 
 - **No raw transcript in the public repo.** It has his name and voice, and he agreed to a recording for my class, not to publication. The write-up uses "Tester A" and quotes only a few lines.
-- **Only quotes I'm sure he said.** The transcript has no speaker labels. The agent flagged that one line, about highlighting minutes versus seconds, could be mine and not his, so it isn't quoted in `research/tester-a.md`.
+- **Only quotes I have checked.** The transcript has no speaker labels. The agent flagged that one line, about highlighting minutes versus seconds, might have been mine. I listened to the recording and it was Tester A, so it is now quoted in `research/tester-a.md`. The reflection and `prompts/form-hints.md` already had it right.
