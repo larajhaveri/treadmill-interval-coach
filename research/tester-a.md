@@ -2,7 +2,7 @@
 
 **Date:** 3 November 2026. **Interview 1 of several planned.**
 Tester A is not in my class. His name, the recording and the raw transcript are not in this repo.
-The quotes below come from an automatic transcript and are lightly cleaned. The transcript has no speaker labels, so I only quote lines I am sure he said.
+The quotes below come from an automatic transcript and are lightly cleaned. The transcript has no speaker labels, so I only quote lines I have checked against the recording as his.
 
 ## Who he is
 
@@ -20,7 +20,7 @@ I did not manage to stay hands-off. I told him to use his personal email rather 
 ## What I saw, in order
 
 1. **First screen.** He didn't register that it is a treadmill app.
-2. **Add workout form.** He hesitated over the blank warm-up box and said: "I feel like I leave it blank, it would by default, take it as ten." A 30 went into a minutes box where the short workout needed seconds. Both point to the same problem: the units and the meaning of a blank box were not clear.
+2. **Add workout form.** He hesitated over the blank warm-up box and said: "I feel like I leave it blank, it would by default, take it as ten." A 30 went into a minutes box where the short workout needed seconds, and he said: "I should probably do a better job of highlighting the minutes versus seconds." Both point to the same problem: the units and the meaning of a blank box were not clear.
 3. **Workout list.** He pressed Apply on the filter with nothing entered and saw his one workout. He mentioned that a drop-down might have worked better somewhere on the form; the transcript doesn't say which field.
 4. **Run player.** He said he wouldn't look at the screen while running, so the spoken cues would help. He heard the "halfway" cue as speech and saw it as text.
 5. **After a rep.** On the walk, the 20 second heads-up cut most of a short rest. He suggested building a buffer around speed changes, a 5 or 10 second window to move between speeds.
