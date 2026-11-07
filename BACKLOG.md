@@ -38,10 +38,10 @@ Tested on an iPhone in Google Chrome with Spotify playing. The cues are spoken o
 - Google sign-in is in testing mode: only listed test users can sign in. Publishing needs a homepage and a privacy policy page.
 - The plan's `voice` setting was left out: a web page cannot choose the phone's voice reliably across devices.
 
-## From my own real run (3 Nov evening, on my treadmill)
-I used the live app for a real workout. It did not hold up, and I stopped using it partway and went back to working out the times and distances myself, which is the problem the app was built to solve. In order of how much they hurt:
+## From my first full workout (3 Nov evening, on my treadmill)
+I used the live app for a full workout. It did not hold up, and I stopped using it partway and went back to working out the times and distances myself, which is the problem the app was built to solve. In order of how much they hurt:
 - **The screen kept locking.** I had to unlock my phone again and again to keep the app open. The screen wake lock did not hold. This is a bug.
-- **Cues were missed at the changes.** Sometimes I did not hear the change from walk to rep or from rep to walk, so I kept running longer than planned. A likely cause is the page being suspended when the screen goes dark, but that is a guess and needs real debugging.
+- **Cues were missed at the changes.** Sometimes I did not hear the change from walk to rep or from rep to walk, so I kept running longer than planned. A likely cause is the page being suspended when the screen goes dark, but that is a guess and needs debugging on my phone.
 - **The cues stopped my music.** Each cue paused it, and I had to press my AirPods to start it again. My earlier phone test showed the cues playing over the music without pausing it. I do not know why the result changed. One difference I have not tested: the earlier test was not necessarily with AirPods connected.
 - **Getting started took too long.** Typing my email and password to sign in was annoying, and typing the workout name and all the numbers cost me running time.
 - **Ideas from this run:** stay signed in; start the last workout in one tap; auto-fill the workout name from the numbers; fill in a workout by speaking it.

@@ -60,10 +60,34 @@ Two tests run on every push (see `docs/tests.md` for plain-English explanations)
 - **Data isolation:** one runner can never see another runner's workouts.
 - **Dashboard:** 5 × 600 m, 4 × 400 m and 5 × 800 m show a total of 8,600 m.
 
+## User research
+
+I have interviewed one person so far, "Tester A". He is a street runner who used to run on treadmills and tracks
+his runs on a watch and Strava. He is not in my class. He signed up with his own account, shared his screen, and used the
+live app for about 10 minutes before I asked him questions. I recorded the call with his permission. I wasn't fully
+hands-off: I told him to use his personal email, gave him the numbers for a 2.5 minute workout, and prompted him to
+press Skip and to start his music.
+
+**What he struggled with**
+1. The blank warm-up and cool-down boxes looked like they had a default. A blank box means no warm-up, but he expected ten.
+2. He didn't know it was a treadmill app. The name is on the first screen and he didn't notice it.
+3. He couldn't find his past sessions, and he wanted a place for comments. Both exist, and he found neither.
+
+**What he liked:** it is simple and not overloaded, he liked the colors and fonts, and he found the spoken cues brief
+and to the point. **What he would use it for:** he said he probably wouldn't use it as a street runner, and would if he
+followed a weekly training plan.
+
+**What I changed:** the form labels and hints, in PR #35 (see `prompts/form-hints.md`). His other requests, and mine
+from my own first full workout, are in `BACKLOG.md`. The full write-up is in `research/tester-a.md`. Raw recordings
+and transcripts are not in this repo, because they contain a person's voice and name.
+
+My next interviews should be with people who run intervals on a treadmill, since he doesn't.
+
 ## Project documents
 
 - `PLAN.md`: the plan written before building
 - `schema.md`: the database, compared with the plan
+- `research/`: what I learned from interviewing people who tried the app
 - `BACKLOG.md`: ideas and known gaps for after the project
 - `docs/tests.md`: the two tests
 - `prompts/`: the prompts I gave the coding agent, one file per feature
@@ -72,10 +96,10 @@ Two tests run on every push (see `docs/tests.md` for plain-English explanations)
 
 - **Music and spoken cues on iPhone (tested twice on 3 Nov 2026, with different results):** in a test at my desk on
   Chrome with Spotify playing, the cues were spoken over the music at normal volume, and the music did not dim or pause.
-  In a real run that evening, each cue paused my music and I had to restart it by hand. I do not know why the results
-  differ. A web page cannot lower another app's music, so real dimming would need a native app. This was the biggest
+  In my first full workout that evening, each cue paused my music and I had to restart it by hand. I do not know why the results
+  differ. A web page cannot lower another app's music, so dimming would need a native app. This was the biggest
   risk in `PLAN.md`.
-- **Known bugs from a real run (not fixed yet, listed in `BACKLOG.md`):** the screen can lock during a run even though the
+- **Known bugs from my first full workout (not fixed yet, listed in `BACKLOG.md`):** the screen can lock during a run even though the
   page asks it to stay awake, and cues can be missed at the changes between a walk and a rep when that happens. Keep
   the app open and the screen unlocked until this is fixed.
 - **The iPhone silent switch mutes the cues.** With the switch on (orange showing), the cue text appears but nothing is
