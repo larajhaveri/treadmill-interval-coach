@@ -48,3 +48,8 @@ I used the live app for a full workout. It did not hold up, and I stopped using 
 
 What to do first after the assignment: fix the screen lock and the missed cues, then retest the music with and without AirPods.
 
+## Analytics (PostHog is in; these are the next steps)
+- **Count the actions that happen on the server:** sign-ups, workouts created, sessions logged and stars. Today only page views and the run player are tracked, so those steps can only be read from page views.
+- **Questions to answer with it:** how many testers reach the run player, how many finish a workout, and where they stop (the "at_second" of a pause or skip).
+- **Ad blockers** stop some PostHog calls. Sending them through my own domain would fix that.
+- **Cookie notice** if people in the EU start using the app, because PostHog stores an id in the browser.

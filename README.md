@@ -31,6 +31,7 @@ you would like to try it, ask me to add your Google email.
 | Vercel | hosts the site; every merge to `main` deploys automatically |
 | GitHub | the code, issues and pull requests; a check runs the tests on every push |
 | Recharts | the dashboard chart |
+| PostHog | counts visits and run player use, so I can see what people do (see "Analytics" below) |
 | Vitest and PGlite | the tests |
 | Claude Code | the coding agent that wrote the code from my plan and prompts |
 
@@ -53,6 +54,16 @@ You need Node 22 and a free Supabase project.
 5. `npm run dev`, then open http://localhost:3000
 
 Other commands: `npm test` runs the tests, `npm run lint` checks the code, `npm run build` makes a production build.
+
+## Analytics
+
+The app uses PostHog to count what people do. It only runs when `NEXT_PUBLIC_POSTHOG_KEY` is set (in Vercel for the live site), so it is off on a laptop by default.
+
+**What it records:** page views (with workout ids replaced by `:id`, and no search words), a random user id for signed-in runners, and four run player events: started, paused, skipped and completed, each with a few numbers such as the workout length.
+
+**What it never records:** names of workouts, notes, search words, email addresses, clicks and typing (autocapture is off), or screen recordings (off). The rules are in `lib/analytics.ts` and checked by `tests/analytics.test.ts`.
+
+To turn it on yourself, create a free PostHog project, then set `NEXT_PUBLIC_POSTHOG_KEY` and `NEXT_PUBLIC_POSTHOG_HOST` (see `.env.example`). Not tracked yet: sign-ups, workouts created, sessions logged and stars (see `BACKLOG.md`).
 
 ## Tests
 
