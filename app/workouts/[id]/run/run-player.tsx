@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import { buildCues, buildTimeline, fmtNum, mmss, segmentIndexAt, type RunConfig } from "@/lib/run-plan";
+import { track } from "@/lib/analytics-client";
 
 type Props = { config: RunConfig; workoutId: string };
 
@@ -126,6 +127,7 @@ export default function RunPlayer({ config, workoutId }: Props) {
     setElapsed(total * 1000);
     setRunning(false);
     releaseWake();
+    track("run_completed", { total_seconds: total, reps: config.reps });
   }
 
   // Runs five times a second: speaks any cue that is due, then updates the screen.
@@ -172,6 +174,7 @@ export default function RunPlayer({ config, workoutId }: Props) {
     }
     startedAtRef.current = Date.now();
     setRunning(true);
+    track("run_started", { total_seconds: total, reps: config.reps, resumed: baseRef.current > 0 });
     void acquireWake();
     timerRef.current = setInterval(tick, 200);
     tick(); // inside the tap, so the phone allows the first spoken cue
@@ -183,6 +186,7 @@ export default function RunPlayer({ config, workoutId }: Props) {
     stopSpeech();
     setRunning(false);
     releaseWake();
+    track("run_paused", { at_second: Math.round(baseRef.current / 1000), total_seconds: total });
   }
 
   function jumpTo(seconds: number) {
@@ -196,6 +200,7 @@ export default function RunPlayer({ config, workoutId }: Props) {
   }
 
   function skip() {
+    track("run_skipped", { at_second: Math.round(elapsed / 1000), total_seconds: total });
     jumpTo(next ? next.start : total);
   }
 
